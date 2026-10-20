@@ -21,6 +21,30 @@ playButton.addEventListener('click', async () => {
         audioContext = new AudioContext();
         volumeNode = audioContext.createGain();
         volumeNode.gain.value = Number(volumne)
+        volumeNode.connect(audioContext.destination);
+    }
+
+    if(!soundBuffer) {
+        playButton.disable = true;
+        statusText.textContent = 'Loading...';
+        try {
+            soundBuffer = await loadSound('sounds/Light Rain.')
+        }   catch (error) {
+            statusText.textContent = error.message;
+            return;
+        } finally {
+            playButton.disabled = false;
+        }
+    }
+
+    if (source) {
+        stopSound();
+        playButton.textContent = 'Play sound';
+        statusText.textContent = 'Stopped';
+    } else {
+        startSound();
+        playButton.textContent = 'Stop sound';
+        statusText.textContent = 'Playing';
     }
     statusText.textContent = 'Clicked!';
 });
@@ -37,3 +61,10 @@ function stopSound() {
     source.Stop();
     source = null;
 }
+
+volumeSlider.addEventListener('input', () => {
+    if (volumeNode) {
+
+        volumeNode.gain.setTargetAtTime(Number(volumeSlider.value), audioContext.currentTime, 0.03);
+    }
+});
