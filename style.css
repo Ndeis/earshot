@@ -1,0 +1,23 @@
+body {
+    font-family: system-ui, sans-serif;
+    max-width: 32rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    line-height: 1.5;
+}
+
+button {
+    font-size: 1.25rem;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+}
+
+label {
+    display: block;
+    margin-top: 1.5rem;
+}
+
+input[type="range"] {
+    display: block;
+    width: 100%;
+}

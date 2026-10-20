@@ -2,11 +2,19 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Earshot</title>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <h1>
-            Hello, table
-        </h1>
+        <h1>Earshot</h1>
+        <button id="playButton" type="button">Play rain</button>
+
+        <label for="volume">Volume</label>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8">
+
+        <p id="status">Stopped</p>
+
+        <script src="app.js"></script>
     </body>
 </html>
