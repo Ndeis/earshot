@@ -16,11 +16,24 @@ async function loadSound(url) {
     return await audioContext.decodeAudioData(fileData);
 }
 
+function startSound() {
+    source = audioContext.createBufferSource();
+    source.buffer = soundBuffer;
+    source.loop = true;
+    source.connect(volumeNode);
+    source.start();
+}
+
+function stopSound() {
+    source.stop();
+    source = null;
+}
+
 playButton.addEventListener('click', async () => {
     if (!audioContext) {
         audioContext = new AudioContext();
         volumeNode = audioContext.createGain();
-        volumeNode.gain.value = Number(volumne)
+        volumeNode.gain.value = Number(volumeSlider.value)
         volumeNode.connect(audioContext.destination);
     }
 
@@ -28,7 +41,7 @@ playButton.addEventListener('click', async () => {
         playButton.disable = true;
         statusText.textContent = 'Loading...';
         try {
-            soundBuffer = await loadSound('sounds/Light Rain.')
+            soundBuffer = await loadSound('sounds/Light Rain.mp3')
         }   catch (error) {
             statusText.textContent = error.message;
             return;
@@ -46,25 +59,11 @@ playButton.addEventListener('click', async () => {
         playButton.textContent = 'Stop sound';
         statusText.textContent = 'Playing';
     }
-    statusText.textContent = 'Clicked!';
+    //statusText.textContent = 'Clicked!';
 });
-
-function startSound() {
-    source = audioContext.createBufferSource();
-    source.buffer = soundBuffer;
-    source.loop = true;
-    source.connect(volumeNode);
-    source.start();
-}
-
-function stopSound() {
-    source.Stop();
-    source = null;
-}
 
 volumeSlider.addEventListener('input', () => {
     if (volumeNode) {
-
         volumeNode.gain.setTargetAtTime(Number(volumeSlider.value), audioContext.currentTime, 0.03);
     }
 });
