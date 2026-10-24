@@ -5,6 +5,7 @@ const statusText = document.getElementById('status');
 let audioContext = null;
 let soundBuffer = null;
 let volumeNode = null;
+let fade = null;
 let source = null;
 
 async function loadSound(url) {
@@ -20,13 +21,22 @@ function startSound() {
     source = audioContext.createBufferSource();
     source.buffer = soundBuffer;
     source.loop = true;
-    source.connect(volumeNode);
+    
+    fade = audioContext.createGain();
+    fade.gain.value = 0;
+
+    source.connect(fade);
+    fade.connect(volumeNode);
     source.start();
+    fade.gain.setTargetAtTime(1, audioContext.currentTime, 0.3)
+
 }
 
 function stopSound() {
-    source.stop();
+    fade.gain.setTargetAtTime(0, audioContext.currentTime, 0.3);
+    source.stop(audioContext.currentTime +1.5)
     source = null;
+    fade = null;
 }
 
 playButton.addEventListener('click', async () => {
